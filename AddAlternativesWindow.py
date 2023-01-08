@@ -1,22 +1,30 @@
 import tkinter
 
-from CompareWindow import CompareWindow
+from CategoriesComparisonWindow import CategoriesComparisonWindow
 
+class AddAlternativesWindow:
 
-class AlternativesWindow:
-
-    def __init__(self):
-        self.alternatives_array = []
+    def __init__(self, calculations_matrix, alternatives_array):
+        self.calculations_matrix = calculations_matrix
+        self.alternatives_array = alternatives_array
         self.root = tkinter.Tk()
         self.root.geometry('800x600')
         self.root.title('Headphones')
+        self.attributes = ['Wireless', 'Type', 'ANC', 'Price', 'Microphone', 'SPL', 'Impedance']
         self.root['bg'] = '#f48fb1'
         frame = tkinter.Frame(self.root)
+
+        temp = ''
+        for hp in self.alternatives_array:
+            temp += hp[0]
+            temp += '\n'
+        if temp == '':
+            temp = "No headphones added"
 
         label = tkinter.Label(frame, text='HEADPHONES', font=("Gill Sans MT", 32), bg='#f48fb1', pady=20, width=600)
         label.pack()
 
-        self.headphones_label = tkinter.Label(frame, text='No headphones added', font=("Gill Sans MT", 28), bg='#f48fb1', width=600)
+        self.headphones_label = tkinter.Label(frame, text=temp, font=("Gill Sans MT", 28), bg='#f48fb1', width=600)
         self.headphones_label.pack()
 
         finishButton = tkinter.Button(text="Finish", font=("Gill Sans MT", 20), command=self._finish_adding)
@@ -26,7 +34,6 @@ class AlternativesWindow:
         addButton.pack(side=tkinter.BOTTOM)
 
         frame.pack(side=tkinter.TOP)
-        self.root.mainloop()
 
     def _submit(self):
         name = self.name_txt.get("1.0", "end-1c")
@@ -39,15 +46,14 @@ class AlternativesWindow:
         impedance = self.impedance_txt.get("1.0", "end-1c")
 
         hp_array = [name, wireless, type, anc, price, micro, spl, impedance]
-        self.alternatives_array.append(hp_array)
 
+        print(self.alternatives_array)
         temp = ''
         for hp in self.alternatives_array:
             temp += hp[0]
             temp += '\n'
 
         self.headphones_label.config(text=temp)
-
         self.root_add.destroy()
 
     def _open_adding_window(self):
@@ -108,9 +114,17 @@ class AlternativesWindow:
 
         self.root_add.mainloop()
 
+    def _prepare_calculations_matrix(self):
+        number_of_options = len(self.alternatives_array)
+        for attribute in self.attributes:
+            self.calculations_matrix[attribute] = [[1 for i in range (number_of_options)] for j in range (number_of_options)]
+        self.calculations_matrix["criteria_between_eo"] = [[1 for i in range(len(self.attributes))] for j in range(len(self.attributes))]
+
     def _finish_adding(self):
+        self._prepare_calculations_matrix()
         self.root.destroy()
-        CompareWindow(self.alternatives_array)
+        CategoriesComparisonWindow(self.calculations_matrix, self.alternatives_array,)
 
+    def run(self):
+        self.root.mainloop()
 
-AlternativesWindow()
