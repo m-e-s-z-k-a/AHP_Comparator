@@ -47,7 +47,6 @@ class AddAlternativesWindow:
 
         hp_array = [name, wireless, type, anc, price, micro, spl, impedance]
 
-        print(self.alternatives_array)
         temp = ''
         for hp in self.alternatives_array:
             temp += hp[0]

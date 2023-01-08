@@ -83,8 +83,6 @@ class AlternativesComparisonWindow:
                " (" + self.alternatives_array[self.first_index][self.attribute_index+1]+ ")"
 
     def _generate_second_label(self):
-        print(self.second_index)
-        print(self.attribute_index+1)
         return self.alternatives_array[self.second_index][0] + \
                " (" + self.alternatives_array[self.second_index][self.attribute_index+1] + ")"
 
